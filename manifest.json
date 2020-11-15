@@ -1,0 +1,23 @@
+{
+    "name": "Untrusted Types",
+    "version": "0.0.1",
+    "manifest_version": 2,
+    "description": "Abusing Trusted Types to discover XSS sinks.",
+    "homepage_url": "https://blog.reconless.com",
+    "permissions": [
+        "http://*/*",
+        "https://*/*"
+    ],
+    "content_scripts": [{
+        "matches": [
+            "http://*/*",
+            "https://*/*"
+        ],
+        "all_frames": true,
+        "match_about_blank": true,
+        "run_at": "document_start",
+        "js": [
+            "content.js"
+        ]
+    }]
+}
