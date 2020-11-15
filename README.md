@@ -17,9 +17,15 @@ Untrusted Types works by logging DOM manipulations that could lead to XSS. Simpl
 
 This is the standward way which is to simply log all sinks and the corresponding changes to the DOM. You start tracing from the sinks back to the sources.
 
+![](https://github.com/filedescriptor/untrusted-types/blob/main/sinks_to_sources.png)
+
 ### Sources -> Sinks
 
-This is useful when there are too many sinks but few sources. Insert the string `d0mxss` in sources and sinks that contain this string will be highlighted. You start tracing from the sources to the sinks.
+This is useful when there are too many sinks but few sources. Insert the keyword `d0mxss` in sources and sinks that contain this string will be highlighted. You start tracing from the sources to the sinks.
+
+Additionally, you can change the keyword and configure whether to only show highlighted sinks in content.js.
+
+![](https://github.com/filedescriptor/untrusted-types/blob/main/sources_to_sinks.png)
 
 ## Limitation & Known Issues
 1. While it covers a majority of sinks, it doesn't cover navigation sinks like `location = user_input` unless it's `location = 'javascript:' + user_input`. 
