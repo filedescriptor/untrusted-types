@@ -9,6 +9,11 @@ const meta = document.createElement('meta');
 const script = document.createElement('script');
 script.innerHTML = `
 (() => {
+    let _open = open;
+    open = function() {
+        log(arguments[0], 0, 'Window open');
+        _open.apply(window, arguments);
+    }
     function log(input, type, sink) {
         let keyword = ${JSON.stringify(keyword)};
         if (keyword && input.includes(keyword)) {
