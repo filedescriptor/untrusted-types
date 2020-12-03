@@ -2,6 +2,8 @@
 
 Untrusted Types is a Chrome extension that abuses [Trusted Types](https://w3c.github.io/webappsec-trusted-types/dist/spec/) to log DOMXSS sinks. Requires Chrome v85+.
 
+A simple tutorial: https://www.youtube.com/watch?v=CNNCCgDkt5k
+
 ## Installation
 
 1. Download this repo
