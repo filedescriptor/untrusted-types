@@ -4,6 +4,12 @@ Untrusted Types is a Chrome extension that abuses [Trusted Types](https://w3c.gi
 
 A simple tutorial: https://www.youtube.com/watch?v=CNNCCgDkt5k
 
+## TODO - FORK :
+
+[] Filter domain
+[X] Trace limit
+[] Filter js file
+
 ## Installation
 
 1. Download this repo

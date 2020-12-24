@@ -1,6 +1,7 @@
 // chrome.storage is too slow to allow custom options
 // edit the settings here instead
 let keyword = 'd0mxss';
+let trace_limit = -1 ; // -1 = no limit
 let onlyLogHighlighted = false;
 // creating a policy in the content script context will result in Chrome crashing
 // therefore we need to run the code in the website's context
@@ -29,7 +30,12 @@ script.innerHTML = `
             }
             console.trace.apply(console, args);
         } else if (${!onlyLogHighlighted}) {
-            console.trace(location.href + '\\n%c' + sink, 'background: #222; color: #bada55; font-size: 16px', '\\n' + input);
+            e = new Error();
+            trace_n = (e.stack.match(/\\sat\\s/g) || []).length ; // bugged ?
+            console.log(trace_n);
+            if ( trace_n < ${trace_limit} ) {
+						     console.trace(location.href + '\\n%c' + sink, 'background: #222; color: #bada55; font-size: 16px', '\\n' + input);
+						}
         }
         return input;
     }
