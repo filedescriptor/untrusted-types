@@ -1,13 +1,19 @@
 // chrome.storage is too slow to allow custom options
-// edit the settings here instead
+// edit the settings on settings.json instead
 
-options = {
-    "keyword" : 'd0mxss',
-    "traceLimit" : 5, // 9999 = no limit
-    "onlyLogHighlighted" : false,
-    "ignoredDomains" : [], // Regex list of domains to ignore
-    "ignoredFiles" : [] // Regex list of files to ignore
-}
+const settingsUrl = chrome.runtime.getURL('settings.json');
+
+// loads the settings.json file, so you don't need to reload the extension with every edit
+var request = new XMLHttpRequest();
+request.open('GET', settingsUrl, false);
+request.send(null);
+
+// keyword = string to be inserted on sources, sinks that contain this string will be highlighted.
+// traceLimit = If a sink passes by more than 'traceLimit' functions, it will not be logged. Default is no limit.
+// onlyLogHighlighted = Only show highlighted sinks.
+// ignored = List of strings of files/domains to be ignored, if a sink pass by one of them it will not log.
+// ignoredIfFirst = List of strings of files/domains to be ignored ONLY IF is on the first function of the trace.
+settings = JSON.parse(request.responseText) ;
 
 // creating a policy in the content script context will result in Chrome crashing
 // therefore we need to run the code in the website's context
@@ -22,23 +28,38 @@ script.innerHTML = `
         _open.apply(window, arguments);
     }
     function log(input, type, sink) {
-        let options = ${JSON.stringify(options)};
-        if (options.keyword && input.includes(options.keyword)) {
-            let highlightedInput = input.replaceAll(options.keyword, '%c$&%c');
+        let settings = ${JSON.stringify(settings)};
+        if (settings.keyword && input.includes(settings.keyword)) {
+            let highlightedInput = input.replaceAll(settings.keyword, '%c$&%c');
             let args = [
                 location.href + '\\n%c' + sink + '\\n%c' + highlightedInput, 
                 'background: red; color: white; font-size: 16px',
                 'background: unset; color: unset; font-size: unset;'
             ];
-            for (let i = 0; i < input.split(options.keyword).length - 1; i++) {
+            for (let i = 0; i < input.split(settings.keyword).length - 1; i++) {
                 args.push('color: red; border: 1px dotted red; background: yellow;');
                 args.push('color: unset; border: reset;background: unset');
             }
             console.trace.apply(console, args);
-        } else if (!options.onlyLogHighlighted) {
+        } else if (!settings.onlyLogHighlighted) {
             e = new Error();
             trace_n = (e.stack.match(/\\sat\\s/g) || []).length ; // bugged ?
-            if ( trace_n < options.traceLimit ) {
+            trace = e.stack.split("\\n") ; 
+            trace_last_line = trace[trace.length-1] ;
+            ignored = false ;
+            for (var i = settings.ignored.length - 1; i >= 0; i--) {
+                if ( e.stack.includes(settings.ignored[i]) ) {
+                    ignored = true ;
+                    break ;
+                }
+            }
+            for (var i = settings.ignoredIfFirst.length - 1; i >= 0; i--) {
+                if ( trace_last_line.includes(settings.ignoredIfFirst[i]) ) {
+                    ignored = true ;
+                    break ;
+                }
+            }
+            if ( trace_n < settings.traceLimit && !ignored ) {
                 console.trace(location.href + '\\n%c' + sink, 'background: #222; color: #bada55; font-size: 16px', '\\n' + input);
             }
         }

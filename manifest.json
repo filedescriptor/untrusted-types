@@ -8,6 +8,9 @@
         "http://*/*",
         "https://*/*"
     ],
+    "web_accessible_resources" : [
+        "settings.json"
+    ],
     "content_scripts": [{
         "matches": [
             "http://*/*",
