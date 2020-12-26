@@ -4,12 +4,6 @@ Untrusted Types is a Chrome extension that abuses [Trusted Types](https://w3c.gi
 
 A simple tutorial: https://www.youtube.com/watch?v=CNNCCgDkt5k
 
-## TODO - FORK :
-
-[] Filter domain
-[X] Trace limit
-[] Filter js file
-
 ## Installation
 
 1. Download this repo
@@ -20,6 +14,20 @@ A simple tutorial: https://www.youtube.com/watch?v=CNNCCgDkt5k
 ## Usage
 
 Untrusted Types works by logging DOM manipulations that could lead to XSS. Simply open DevTools and start debugging. It supports two types of sink discovery.
+
+### Settings
+
+Edit the `settings.json` file to change the options.
+
+```json
+{
+    "keyword" : "d0mxss", // String to be inserted on sources, sinks that contain this string will be highlighted.
+    "traceLimit" : 9999, // If a sink passes by more than 'traceLimit' functions, it will not be logged. Default is no limit.
+    "onlyLogHighlighted" : false, // Only show highlighted sinks.
+    "ignored" : [] ,  // List of strings of files/domains to be ignored, if a sink pass by one of them it will not log.
+    "ignoredIfFirst" : [] // List of strings of files/domains to be ignored ONLY IF is on the first function of the trace.
+}
+```
 
 ### Sinks -> Sources
 
