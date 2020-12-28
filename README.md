@@ -15,19 +15,6 @@ A simple tutorial: https://www.youtube.com/watch?v=CNNCCgDkt5k
 
 Untrusted Types works by logging DOM manipulations that could lead to XSS. Simply open DevTools and start debugging. It supports two types of sink discovery.
 
-### Settings
-
-Edit the `settings.json` file to change the options.
-
-```json
-{
-    "keyword" : "d0mxss", // String to be inserted on sources, sinks that contain this string will be highlighted.
-    "traceLimit" : 9999, // If a sink passes by more than 'traceLimit' functions, it will not be logged. Default is no limit.
-    "onlyLogHighlighted" : false, // Only show highlighted sinks.
-    "ignored" : [] ,  // List of strings of files/domains to be ignored, if a sink pass by one of them it will not log.
-    "ignoredIfFirst" : [] // List of strings of files/domains to be ignored ONLY IF is on the first function of the trace.
-}
-```
 
 ### Sinks -> Sources
 
@@ -42,6 +29,18 @@ This is useful when there are too many sinks but few sources. Insert the keyword
 Additionally, you can change the keyword and configure whether to only show highlighted sinks in content.js.
 
 ![](https://github.com/filedescriptor/untrusted-types/blob/main/sources_to_sinks.png)
+
+### Settings
+
+Edit the `settings.json` file to change the options. No need to reload the extension.
+
+Name|Default value|Description
+----|-------------|-----------
+keyword|d0mxss|String to be inserted on sources, sinks that contain this string will be highlighted.
+traceLimit|9999|If a sink passes by more than 'traceLimit'-functions, it will not be logged. Default is no limit.
+onlyLogHighlighted|false|Only show highlighted sinks.
+ignored|[]|List of strings of files/domains to be ignored, if a sink pass by one of them it will not be logged.
+ignoredIfFirst|[]|List of strings of files/domains to be ignored ONLY IF is the source of the sink.
 
 ## Limitation & Known Issues
 1. While it covers a majority of sinks, it doesn't cover navigation sinks like `location = user_input` unless it's `location = 'javascript:' + user_input`. 
