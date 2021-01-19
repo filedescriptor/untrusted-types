@@ -1,0 +1,85 @@
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    background-color: #212121;
+}
+
+.hljs {
+    white-space: pre-wrap;
+}
+
+::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+    background-color: #242424;
+}
+
+::-webkit-scrollbar-corner {
+    background-color: #242424;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background-color: #333;
+    box-shadow: inset 0 0 1px rgb(255 255 255 / 50%);
+}
+
+:not(.platform-mac).-theme-with-dark-background ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 1px rgb(255 255 255 / 30%);
+    background: rgb(36 36 36);
+}
+
+input,
+button,
+select,
+textarea {
+    filter: invert(80%);
+    background-color: transparent;
+    border: 1px solid rgb(0 0 0 / 20%);
+    font: inherit;
+}
+
+input[type=checkbox] {
+    vertical-align: -2px;
+}
+
+input[type=text]:hover {
+    border: 1px solid #5a5a5a;
+}
+
+input[type=text]:focus-within {
+    border: 1px solid #1a73e8;
+    outline: none;
+}
+
+button.textBtn {
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+    margin: 0.25em;
+    font: inherit;
+    filter: none;
+    color: #9aa0a6;
+}
+
+button.textBtn span.icon {
+    font-weight: bold;
+    margin-right: 2px;
+}
+
+button.textBtn:hover {
+    color: #bbbfc3;
+}
+
+label {
+    margin-left: 3px;
+    user-select: none;
+}
+
+label:hover {
+    color: #bbbfc3;
+}

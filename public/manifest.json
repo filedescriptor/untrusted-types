@@ -1,0 +1,40 @@
+{
+    "name": "Untrusted Types for DevTools",
+    "description": "Abusing Trusted Types to discover XSS sinks.",
+    "version": "1.0",
+    "manifest_version": 2,
+    "icons": {
+        "128": "icons/icon128.png"
+    },
+    "permissions": [
+        "storage",
+        "webRequest",
+        "webRequestBlocking",
+        "http://*/*",
+        "https://*/*"
+    ],
+    "web_accessible_resources": [
+        "settings.json"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "http://*/*",
+                "https://*/*"
+            ],
+            "all_frames": true,
+            "match_about_blank": true,
+            "run_at": "document_start",
+            "js": [
+                "build/content.js"
+            ]
+        }
+    ],
+    "devtools_page": "devtools.html",
+    "background": {
+        "scripts": [
+            "build/background.js"
+        ],
+        "persistent": true
+    }
+}
