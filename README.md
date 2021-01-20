@@ -4,17 +4,19 @@ Untrusted Types is a Chrome extension that abuses [Trusted Types](https://w3c.gi
 ![Untrusted Types for DevTools](docs/ui.png)
 
 ## Installation
-1. `npm i`
-2. `npm run build`
-3. Go to `chrome://extensions`, enable Developer mode
-4. `Load unpacked`, choose the `public` folder
+### Using npm
+1. Clone the repository 
+2. Install dependencies: `npm i`
+3. Build the project: `npm run build`
+4. Go to `chrome://extensions`, enable Developer mode
+5. `Load unpacked`, choose the `public` folder
 
 ## Usage
 Discover and test inputs passed into sinks that could lead to DOM XSS vulnerabilities.
 
 A sink is a code pattern that could run arbitrary JavaScript code if the input is malicious, for example: `innerHTML`, `eval`, `document.write`.
 
-Keywords (by default `d0mxss`) that are found to be passed in a sink will be highlighted in the extension and in the console.
+Keywords (by default `d0mxss`) that are found to be passed in a sink will be highlighted in the extension and the console.
 
 A simple tutorial: https://www.youtube.com/watch?v=CNNCCgDkt5k
 
@@ -38,6 +40,7 @@ You can edit settings directly in the extension:
 2. It doesn't work in websites that are already using Trusted Types. This is not a problem for now because even Google themselves don't use it a lot
 3. If console logs are not showing the stack trace, refresh the page.
 4. It will fail on web pages with `<iframe src="javascript:...">` (but fine if dynamically inserted). Check [issue #1](https://github.com/filedescriptor/untrusted-types/issues/1)
+5. It will fail in web workers using `importScripts()`. Check [issue #7](https://github.com/filedescriptor/untrusted-types/issues/7)
 
 ## Based on
 - [untrusted-types](https://github.com/filedescriptor/untrusted-types/tree/old)
