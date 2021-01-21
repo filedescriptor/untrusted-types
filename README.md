@@ -11,6 +11,13 @@ Untrusted Types is a Chrome extension that abuses [Trusted Types](https://w3c.gi
 4. Go to `chrome://extensions`, enable Developer mode
 5. `Load unpacked`, choose the `public` folder
 
+### Prebuilt version
+If the project is failing to build for some reason, you can download the prebuilt version from the Releases page.
+1. [Download](https://github.com/filedescriptor/untrusted-types/releases/) and extract the archive
+2. Go to `chrome://extensions`, enable Developer mode
+3. `Load unpacked`, choose the extracted folder
+
+
 ## Usage
 Discover and test inputs passed into sinks that could lead to DOM XSS vulnerabilities.
 
