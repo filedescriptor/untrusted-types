@@ -33,7 +33,7 @@ export default /*javascript*/ `
     let _open = open;
     open = function () {
         log(arguments[0], 0, 'Window open');
-        _open.apply(window, arguments);
+        return _open.apply(window, arguments);
     };
     const scopeId = Math.random().toString(36).substr(2, 2);
     function log(input, type, sink) {
