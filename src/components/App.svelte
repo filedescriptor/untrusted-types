@@ -315,6 +315,16 @@
   <div id="list">
     <List {records} filters={recordsFiltered} />
   </div>
+  {#if records.length === 0}
+    <div id="intro">
+      {#if !recordingEnabled}
+        Enable recording (by clicking the button in the top left) to start
+        listening for new DOM sink events.
+      {:else}
+        Listening for new DOM sink events... You might need to reload the page.
+      {/if}
+    </div>
+  {/if}
 </main>
 
 <style>
@@ -387,5 +397,11 @@
   }
   #list {
     overflow: auto;
+  }
+  #intro {
+    display: flex;
+    align-self: center;
+    align-items: center;
+    flex: 1;
   }
 </style>
