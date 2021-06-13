@@ -4,9 +4,10 @@ const settingsUrl = chrome.runtime.getURL('settings.json');
 var request = new XMLHttpRequest();
 request.open('GET', settingsUrl, false);
 request.send(null);
-const settings = request.responseText || defaultSettings;
 
-export default /*javascript*/ `
+export const settingsValue: string = request.responseText || JSON.stringify(defaultSettings);
+
+export const injected = /*javascript*/ `
 {
     // send message to the devtools panel
     const sendMessage = (type, value) => {
@@ -17,7 +18,7 @@ export default /*javascript*/ `
         }, '*');
     };
 
-    let settings = ${settings};
+    let settings = ${settingsValue};
 
     window.addEventListener('message', (event) => {
         const message = event.data;
@@ -28,7 +29,6 @@ export default /*javascript*/ `
     });
     sendMessage('getSettings');
 
-
     let index = 0;
     let _open = open;
     open = function () {
@@ -37,9 +37,13 @@ export default /*javascript*/ `
     };
     const scopeId = Math.random().toString(36).substr(2, 2);
     function log(input, type, sink) {
+        // ignore new events if recording has been disabled
+        if(!settings.recordingEnabled) return input;
+
         // normalize input
-        input ??= '';
-        input = String(input);
+        let inputLog = input;
+        inputLog ??= '';
+        inputLog = String(inputLog);
 
         const openGroup = () => {
             if (index === 0 && settings.groupMessagesInConsole) {
@@ -52,14 +56,14 @@ export default /*javascript*/ `
         const stackId = scopeId + '-' + index + '-' + Math.random().toString(36).substr(2, 5);
         const errorStack = new Error().stack;
 
-        let highlightedInput = input;
+        let highlightedInput = inputLog;
         let important = false;
         const extraArgs = [];
         for (const keyword of settings.keywords) {
-            if (keyword.length > 1 && input.includes(keyword)) {
+            if (keyword.length > 1 && inputLog.includes(keyword)) {
                 highlightedInput = highlightedInput.replaceAll(keyword, '%c$&%c');
                 important = true;
-                for (let i = 0; i < input.split(keyword).length - 1; i++) {
+                for (let i = 0; i < inputLog.split(keyword).length - 1; i++) {
                     extraArgs.push('color: red; border: 1px dotted red; background: yellow;');
                     extraArgs.push('color: unset; border: reset; background: unset;');
                 }
@@ -75,7 +79,7 @@ export default /*javascript*/ `
             ];
 
             openGroup();
-            sendMessage('sinkFound', { href: location.href, sink, input, stack: errorStack, stackId });
+            sendMessage('sinkFound', { href: location.href, sink, input: inputLog, stack: errorStack, stackId });
             index++;
             console.trace(...args);
 
@@ -102,8 +106,8 @@ export default /*javascript*/ `
 
             if (!ignored) {
                 openGroup();
-                console.trace('#' + stackId + ' ' + location.href + '\\n%c' + sink, 'background: #222; color: #bada55; font-size: 16px', '\\n' + input);
-                sendMessage('sinkFound', { href: location.href, sink, input, stack: errorStack, stackId });
+                console.trace('#' + stackId + ' ' + location.href + '\\n%c' + sink, 'background: #222; color: #bada55; font-size: 16px', '\\n' + inputLog);
+                sendMessage('sinkFound', { href: location.href, sink, input: inputLog, stack: errorStack, stackId });
                 index++;
             }
         }

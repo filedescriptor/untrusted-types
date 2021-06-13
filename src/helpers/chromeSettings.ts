@@ -113,7 +113,9 @@ export const settings: Settings[] = [
     },
 ];
 
-export let defaultSettings = {};
+export let defaultSettings = {
+    recordingEnabled: true
+};
 for (const setting of settings) {
     defaultSettings[setting.key] = setting.defaultValue;
 }

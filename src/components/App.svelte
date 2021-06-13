@@ -10,6 +10,15 @@
   let sinkFilter = '';
   let codeFilter = '';
 
+  let recordingEnabled: boolean = defaultSettings['recordingEnabled'];
+  const recordingEnabledSetting = new ChromeSetting(
+    'recordingEnabled',
+    (newValue) => {
+      recordingEnabled = newValue;
+    },
+    true
+  );
+
   let preserveLog: boolean = defaultSettings['preserveLog'];
   const preserveLogSetting = new ChromeSetting(
     'preserveLog',
@@ -147,7 +156,9 @@
 
     switch (message.type) {
       case 'sinkFound':
-        addNewRecord(message.value);
+        if (recordingEnabled) {
+          addNewRecord(message.value);
+        }
         break;
       case 'pageNavigation':
         if (!preserveLog) {
@@ -219,6 +230,19 @@
 <main>
   <div id="toolbar">
     <div id="options">
+      <div id="recordingWrapper">
+        <input
+          type="checkbox"
+          id="recordingEnabled"
+          bind:checked={recordingEnabled}
+          on:change={() => {
+            recordingEnabledSetting.update(recordingEnabled);
+          }} />
+        <label
+          for="recordingEnabled"
+          title={recordingEnabled ? 'Stop recording' : 'Start recording'} />
+      </div>
+      <span class="divider" />
       <button class="textBtn" on:click={clearRecords}
         ><span class="icon">&#x1F6C7;</span> Clear log</button>
       <span class="divider" />
@@ -349,6 +373,25 @@
     align-items: center;
     flex-wrap: wrap;
   }
+  #toolbar #options #recordingWrapper {
+    display: flex;
+    margin-right: 0.5em;
+  }
+  #toolbar #options #recordingEnabled {
+    display: none;
+  }
+  #toolbar #options #recordingEnabled + label {
+    background-color: #919191;
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  #toolbar #options #recordingEnabled:checked + label {
+    background-color: #ff4d4d;
+    box-shadow: #ff4d4d 0 0 6px -0.5px;
+  }
+
   #toolbar #options #optionsCheckboxes {
     display: flex;
     flex-wrap: wrap;
