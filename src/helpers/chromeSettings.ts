@@ -93,14 +93,14 @@ export const settings: Settings[] = [
     {
         key: 'highlightKeywordMatches',
         label: 'Highlight keyword matches',
-        placeholder: `Might be slow it there's a large number of results or keywords`,
+        placeholder: `Might be slow if there's a large number of results or keywords`,
         defaultValue: true,
         type: SettingType.Boolean,
     },
     {
         key: 'highlightCodeSearchResults',
         label: 'Highlight code search results',
-        placeholder: `Might be slow it there's a large number of results`,
+        placeholder: `Might be slow if there's a large number of results`,
         defaultValue: false,
         type: SettingType.Boolean,
     },
