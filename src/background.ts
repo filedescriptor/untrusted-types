@@ -21,7 +21,7 @@ updateNewestSettings();
 // dynamically return current settings
 chrome.webRequest.onBeforeRequest.addListener(
     () => ({
-        redirectUrl: 'data:application/json,' + JSON.stringify(settings)
+        redirectUrl: 'data:application/json,' + encodeURIComponent(JSON.stringify(settings))
     }),
     {
         urls: [chrome.runtime.getURL('settings.json')]

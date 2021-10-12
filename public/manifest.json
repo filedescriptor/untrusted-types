@@ -1,7 +1,7 @@
 {
     "name": "Untrusted Types for DevTools",
     "description": "Abusing Trusted Types to discover XSS sinks.",
-    "version": "1.0",
+    "version": "1.1.1",
     "manifest_version": 2,
     "icons": {
         "128": "icons/icon128.png"
