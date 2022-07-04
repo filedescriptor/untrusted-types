@@ -5,6 +5,12 @@ var request = new XMLHttpRequest();
 request.open('GET', settingsUrl, false);
 request.send(null);
 
+/* Checking if user gave permission for sending notifications, if not, request it */
+
+if (Notification.permission !== "denied") {
+    Notification.requestPermission();
+}
+
 export const settingsValue: string = request.responseText || JSON.stringify(defaultSettings);
 
 export const injected = /*javascript*/ `
@@ -82,6 +88,23 @@ export const injected = /*javascript*/ `
             sendMessage('sinkFound', { href: location.href, sink, input: inputLog, stack: errorStack, stackId });
             index++;
             console.trace(...args);
+
+            /* Sending notification, see issue #10 */
+
+            /* Defining options, some properties can be changed later: */
+            let options = {
+                //badge: "{URL}",
+                body: "Sink found: " + sink,
+                vibrate: false,
+                requireAction: false,
+                silent: false
+            };
+
+            /* Send notification once keyword was injected into the sink + user gave permission */
+            
+            if(Notification.permission === "granted") { 
+                let notification = new Notification("UNTRUSTED TYPES", options);
+            };
 
         } else if (!settings.onlyLogHighlighted) {
             const stackTraceSplit = errorStack.split('\\n');

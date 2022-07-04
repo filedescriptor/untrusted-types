@@ -11,7 +11,8 @@
         "webRequest",
         "webRequestBlocking",
         "http://*/*",
-        "https://*/*"
+        "https://*/*",
+        "gcm"
     ],
     "web_accessible_resources": [
         "settings.json"
